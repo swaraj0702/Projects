@@ -1,0 +1,14 @@
+
+1.Select Your Bucket:
+In the Buckets list, choose the name of the bucket you want to enable events for.
+2.Navigate to Properties:
+Go to the Properties tab of the selected bucket.
+3.Create Event Notification:
+Scroll down to the Event notifications section and click on Create event notification.
+4.Configure Event Notification:
+Name your event notification.
+Specify Event Types: Choose the events you want to be notified about (e.g., object creation, deletion, etc.).
+Set Filters (optional): You can specify prefixes or suffixes to filter notifications for specific objects.
+Select Destination: Choose where you want the notifications to be sent (e.g., AWS Lambda, Amazon SNS, or Amazon SQS).
+5.Save Configuration:
+After configuring the event notification, click Save changes to activate it.
