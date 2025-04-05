@@ -22,7 +22,7 @@ pipeline {
                 bat '''
                 python -m venv %VIRTUAL_ENV%
                 call %VIRTUAL_ENV%\\Scripts\\activate
-                pip install --upgrade pip
+                %VIRTUAL_ENV%\\Scripts\\python.exe -m pip install --upgrade pip
                 pip install -r requirements.txt
                 '''
             }
@@ -33,7 +33,13 @@ pipeline {
                 echo 'Running unit tests...'
                 bat '''
                 call %VIRTUAL_ENV%\\Scripts\\activate
-                python -m unittest discover -s . -p "test_*.py"
+                REM You can switch between unittest and pytest by commenting one of the following lines:
+
+                REM For unittest - make sure tests are in the root or adjust `-s` and `-p`
+                REM python -m unittest discover -s tests -p "test_*.py"
+
+                REM For pytest
+                pytest
                 '''
             }
         }
@@ -50,10 +56,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying the application...'
-                // Replace with real deployment logic for Windows — could be file copy or some custom script
                 bat '''
                 echo Simulating deployment...
-                REM xcopy /Y /I flask-app.zip \\\\your-server\\deployment\\
+                REM Example: xcopy /Y /I flask-app.zip \\\\your-server\\deployment\\
                 '''
             }
         }
