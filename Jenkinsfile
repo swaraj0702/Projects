@@ -13,7 +13,6 @@ pipeline {
                 git branch: 'main',
                 url: 'https://github.com/swaraj0702/Projects.git',
                 credentialsId: 'github token'
-'
             }
         }
 
