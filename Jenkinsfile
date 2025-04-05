@@ -10,7 +10,10 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 echo 'Cloning the repository...'
-                git branch: 'main', url: 'https://github.com/swaraj0702/myflaskapp.git'
+                git branch: 'main',
+                url: 'https://github.com/swaraj0702/Projects.git',
+                credentialsId: 'github token'
+'
             }
         }
 
