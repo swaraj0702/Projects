@@ -14,26 +14,26 @@ pipeline {
             }
         }
 
-        stage('Set Up Environment') {
-            steps {
-                echo 'Setting up virtual environment and installing dependencies...'
-                sh '''
-                python3 -m venv $VIRTUAL_ENV
-                source $VIRTUAL_ENV/bin/activate
-                pip install -r requirements.txt
-                '''
-            }
-        }
+       stage('Set Up Environment') {
+    steps {
+        echo 'Setting up virtual environment and installing dependencies...'
+        sh '''
+        python3 -m venv $VIRTUAL_ENV
+        $VIRTUAL_ENV/bin/pip install --upgrade pip
+        $VIRTUAL_ENV/bin/pip install -r requirements.txt
+        '''
+    }
+}
 
-        stage('Run Tests') {
-            steps {
-                echo 'Running unit tests...'
-                sh '''
-                source $VIRTUAL_ENV/bin/activate
-                python -m unittest discover -s . -p "test_*.py"
-                '''
-            }
-        }
+
+       stage('Run Tests') {
+    steps {
+        echo 'Running unit tests...'
+        sh '''
+        $VIRTUAL_ENV/bin/python -m unittest discover -s . -p "test_*.py"
+        '''
+    }
+}
 
         stage('Build and Package') {
             steps {
