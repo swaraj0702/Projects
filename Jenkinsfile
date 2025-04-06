@@ -16,17 +16,15 @@ pipeline {
             }
         }
 
-        stage('Set Up Environment') {
-            steps {
-                echo 'Setting up virtual environment and installing dependencies...'
-                bat '''
-                python -m venv %VIRTUAL_ENV%
-                call %VIRTUAL_ENV%\\Scripts\\activate
-                %VIRTUAL_ENV%\\Scripts\\python.exe -m pip install --upgrade pip
-                %VIRTUAL_ENV%\\Scripts\\pip install -r requirements.txt
-                '''
-            }
-        }
+       stage('Set Up Environment') {
+    steps {
+        echo 'Setting up virtual environment and installing dependencies...'
+        bat 'python -m venv %VIRTUAL_ENV%'
+        bat 'call %VIRTUAL_ENV%\\Scripts\\activate && pip install --upgrade pip'
+        bat 'call %VIRTUAL_ENV%\\Scripts\\activate && pip install -r requirements.txt'
+    }
+}
+
 
         stage('Run Tests') {
             steps {
