@@ -35,25 +35,19 @@ pipeline {
 
 
         stage('Build and Package') {
-            steps {
-                echo 'Packaging the application...'
-                bat '''
-                powershell Compress-Archive -Path app.py,requirements.txt,.env -DestinationPath flask-app.zip
-                '''
-            }
-        }
+    steps {
+        echo 'Packaging application...'
+        bat 'powershell Compress-Archive -Path app\\* -DestinationPath dist\\app.zip -Force'
+    }
+}
 
         stage('Deploy') {
-            steps {
-                echo 'Deploying the application...'
-                bat '''
-                echo Simulating deployment...
-                REM Replace with actual deployment command, like:
-                REM xcopy /Y /I flask-app.zip \\\\your-server\\deployment\\
-                '''
-            }
-        }
+    steps {
+        echo 'Deploying application...'
+        bat 'venv\\Scripts\\python app\\app.py'
     }
+  }
+}
 
     post {
         success {
