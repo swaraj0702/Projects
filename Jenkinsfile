@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        VIRTUAL_ENV = 'venv' // Virtual environment directory
-        FLASK_PORT = '5000' // Port to run the Flask app
+        VIRTUAL_ENV = 'venv'
+        FLASK_PORT = '5000'
     }
 
     stages {
@@ -16,38 +16,37 @@ pipeline {
             }
         }
 
-      stage('Set Up Environment') {
-    steps {
-        echo 'Setting up virtual environment and installing dependencies...'
-        bat 'python -m venv venv'
-        bat 'venv\\Scripts\\python.exe -m pip install --upgrade pip'
-        bat 'venv\\Scripts\\python.exe -m pip install -r requirements.txt'
-    }
-}
+        stage('Set Up Environment') {
+            steps {
+                echo 'Setting up virtual environment and installing dependencies...'
+                bat 'python -m venv venv'
+                bat 'venv\\Scripts\\python.exe -m pip install --upgrade pip'
+                bat 'venv\\Scripts\\python.exe -m pip install -r requirements.txt'
+            }
+        }
 
+        stage('Run Tests') {
+            steps {
+                echo 'Running unit tests...'
+                bat 'venv\\Scripts\\python -m pytest > result.log || type result.log'
+            }
+        }
 
-       stage('Run Tests') {
-    steps {
-        echo 'Running unit tests...'
-        bat 'venv\\Scripts\\python -m pytest > result.log || type result.log'
-    }
-}
-
-      stage('Build and Package') {
-    steps {
-        echo 'Packaging application...'
-        bat 'mkdir dist'
-        bat 'powershell Compress-Archive -Path Projects\\* -DestinationPath dist\\app.zip -Force'
-
-}
+        stage('Build and Package') {
+            steps {
+                echo 'Packaging application...'
+                bat 'mkdir dist'
+                bat 'powershell Compress-Archive -Path app\\* -DestinationPath dist\\app.zip -Force'
+            }
+        }
 
         stage('Deploy') {
-    steps {
-        echo 'Deploying application...'
-        bat 'venv\\Scripts\\python app\\app.py'
+            steps {
+                echo 'Deploying application...'
+                bat 'venv\\Scripts\\python app\\app.py'
+            }
+        }
     }
-  }
-}
 
     post {
         success {
