@@ -11,8 +11,8 @@ pipeline {
             steps {
                 echo 'Cloning the repository...'
                 git branch: 'main',
-                url: 'https://github.com/swaraj0702/Projects.git',
-                credentialsId: 'github token'
+                    url: 'https://github.com/swaraj0702/Projects.git',
+                    credentialsId: 'github token'
             }
         }
 
@@ -23,7 +23,7 @@ pipeline {
                 python -m venv %VIRTUAL_ENV%
                 call %VIRTUAL_ENV%\\Scripts\\activate
                 %VIRTUAL_ENV%\\Scripts\\python.exe -m pip install --upgrade pip
-                pip install -r requirements.txt
+                %VIRTUAL_ENV%\\Scripts\\pip install -r requirements.txt
                 '''
             }
         }
@@ -33,13 +33,8 @@ pipeline {
                 echo 'Running unit tests...'
                 bat '''
                 call %VIRTUAL_ENV%\\Scripts\\activate
-                REM You can switch between unittest and pytest by commenting one of the following lines:
-
-                REM For unittest - make sure tests are in the root or adjust `-s` and `-p`
-                REM python -m unittest discover -s tests -p "test_*.py"
-
-                REM For pytest
-                pytest
+                REM Using unittest to run test_sample.py or similar
+                %VIRTUAL_ENV%\\Scripts\\python -m unittest discover -s . -p "test_*.py"
                 '''
             }
         }
@@ -58,7 +53,8 @@ pipeline {
                 echo 'Deploying the application...'
                 bat '''
                 echo Simulating deployment...
-                REM Example: xcopy /Y /I flask-app.zip \\\\your-server\\deployment\\
+                REM Replace with actual deployment command, like:
+                REM xcopy /Y /I flask-app.zip \\\\your-server\\deployment\\
                 '''
             }
         }
@@ -66,10 +62,10 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline completed successfully!'
+            echo '✅ Pipeline completed successfully!'
         }
         failure {
-            echo 'Pipeline failed. Check the logs for more details.'
+            echo '❌ Pipeline failed. Check the logs for more details.'
         }
     }
 }
