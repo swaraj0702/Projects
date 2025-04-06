@@ -33,10 +33,10 @@ pipeline {
     }
 }
 
-
-        stage('Build and Package') {
+      stage('Build and Package') {
     steps {
         echo 'Packaging application...'
+        bat 'mkdir dist'
         bat 'powershell Compress-Archive -Path app\\* -DestinationPath dist\\app.zip -Force'
     }
 }
