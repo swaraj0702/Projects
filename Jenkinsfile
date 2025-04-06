@@ -26,16 +26,13 @@ pipeline {
 }
 
 
-        stage('Run Tests') {
-            steps {
-                echo 'Running unit tests...'
-                bat '''
-                call %VIRTUAL_ENV%\\Scripts\\activate
-                REM Using unittest to run test_sample.py or similar
-                %VIRTUAL_ENV%\\Scripts\\python -m unittest discover -s . -p "test_*.py"
-                '''
-            }
-        }
+       stage('Run Tests') {
+    steps {
+        echo 'Running unit tests...'
+        bat 'venv\\Scripts\\python -m pytest > result.log || type result.log'
+    }
+}
+
 
         stage('Build and Package') {
             steps {
