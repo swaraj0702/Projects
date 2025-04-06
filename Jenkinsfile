@@ -16,12 +16,12 @@ pipeline {
             }
         }
 
-       stage('Set Up Environment') {
+      stage('Set Up Environment') {
     steps {
         echo 'Setting up virtual environment and installing dependencies...'
-        bat 'python -m venv %VIRTUAL_ENV%'
-        bat 'call %VIRTUAL_ENV%\\Scripts\\activate && pip install --upgrade pip'
-        bat 'call %VIRTUAL_ENV%\\Scripts\\activate && pip install -r requirements.txt'
+        bat 'python -m venv venv'
+        bat 'venv\\Scripts\\python.exe -m pip install --upgrade pip'
+        bat 'venv\\Scripts\\python.exe -m pip install -r requirements.txt'
     }
 }
 
