@@ -37,8 +37,8 @@ pipeline {
     steps {
         echo 'Packaging application...'
         bat 'mkdir dist'
-        bat 'powershell Compress-Archive -Path app\\* -DestinationPath dist\\app.zip -Force'
-    }
+        bat 'powershell Compress-Archive -Path Projects\\* -DestinationPath dist\\app.zip -Force'
+
 }
 
         stage('Deploy') {
