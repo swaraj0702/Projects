@@ -5,6 +5,14 @@ pipeline {
         VIRTUAL_ENV = 'venv'
         FLASK_PORT = '5000'
     }
+    
+    stages {
+        stage('Check Workspace') {
+            steps {
+                echo '🔍 Listing workspace contents...'
+                bat 'dir /s /b'
+            }
+        }
 
     stages {
         stage('Clone Repository') {
@@ -32,13 +40,15 @@ pipeline {
             }
         }
 
-     stage('Build and Package') {
+    stage('Build and Package') {
     steps {
-        echo 'Packaging application...'
-        bat 'rmdir /s /q dist && mkdir dist'
+        echo '📦 Packaging app...'
+        bat 'if exist dist rmdir /s /q dist'
+        bat 'mkdir dist'
         bat 'powershell Compress-Archive -Path app\\* -DestinationPath dist\\app.zip -Force'
     }
 }
+
 
         stage('Deploy') {
             steps {
