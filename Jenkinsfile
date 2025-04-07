@@ -1,17 +1,18 @@
 pipeline {
     agent any
 
-    stages {
-        stage('Declarative: Checkout SCM') {
-            steps {
-                checkout scm
-            }
-        }
+    environment {
+        VIRTUAL_ENV = 'venv'
+        FLASK_PORT = '5000'
+    }
 
+    stages {
         stage('Clone Repository') {
             steps {
                 echo 'Cloning the repository...'
-                git credentialsId: 'github token', url: 'https://github.com/swaraj0702/Projects.git'
+                git branch: 'main',
+                    url: 'https://github.com/swaraj0702/Projects.git',
+                    credentialsId: 'github token'
             }
         }
 
@@ -27,7 +28,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 echo 'Running unit tests...'
-                bat 'venv\\Scripts\\python -m pytest 1>result.log || type result.log'
+                bat 'venv\\Scripts\\python -m pytest > result.log || type result.log'
             }
         }
 
@@ -35,32 +36,24 @@ pipeline {
             steps {
                 echo 'Packaging application...'
                 bat 'rmdir /s /q dist && mkdir dist'
-                
-                // 👇 Debug directory structure
-                bat 'dir /s /b'
-
-                // 👇 Adjust this based on actual folder structure
-                bat 'powershell Compress-Archive -Path app\\* -DestinationPath dist\\app.zip -Force'
+                bat 'powershell Compress-Archive -Path Projects\\app\\* -DestinationPath dist\\app.zip -Force'
             }
         }
 
         stage('Deploy') {
-            when {
-                expression { currentBuild.currentResult == 'SUCCESS' }
-            }
             steps {
-                echo 'Deploying the application...'
-                // deployment steps (if any)
+                echo 'Deploying application...'
+                bat 'venv\\Scripts\\python app\\app.py'
             }
         }
     }
 
     post {
+        success {
+            echo '✅ Pipeline completed successfully!'
+        }
         failure {
             echo '❌ Pipeline failed. Check the logs for more details.'
-        }
-        success {
-            echo '✅ Pipeline completed successfully.'
         }
     }
 }
