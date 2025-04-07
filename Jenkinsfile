@@ -32,16 +32,13 @@ pipeline {
             }
         }
 
-       stage('Build and Package') {
+     stage('Build and Package') {
     steps {
         echo 'Packaging application...'
         bat 'rmdir /s /q dist && mkdir dist'
-
-        // 👇 Navigate into Projects directory
-        bat 'cd Projects && dir /s /b && powershell Compress-Archive -Path app\\* -DestinationPath ..\\dist\\app.zip -Force'
+        bat 'powershell Compress-Archive -Path app\\* -DestinationPath dist\\app.zip -Force'
     }
 }
-
 
         stage('Deploy') {
             steps {
